@@ -15,8 +15,8 @@ ids = Ids::Client.new(< your app token >, session[:saml_ticket], params['realm']
 ##Authors
 
 [Appoxy.com](http://www.appoxy.com)
-- Andrew Kirilenko
-- Chad Arimura
+-Andrew Kirilenko
+-Chad Arimura
 
 
 ##Credits
