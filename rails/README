@@ -1,0 +1,44 @@
+This is small howto, explaining how to create new inuit application.
+
+1. Go to https://workplace.intuit.com and create new application ("from scratch", "database style"). It should be "Single-table", name doesn't matter.
+
+2. Press Customize / Application and go to Advanced Settings. Check "Uses QuickBooks data via Intuit Data Services". Specify "Application Destination URL" e.g. "http://extract.cloudscalr.com/main?realm={realm}" - this is your main controller. "User Management URL" should be "?a=API_ManageUsers".
+
+3. Check "Require Application Tokens", press "Manage Application Token", create new token.
+
+4. Generate X509 RSA key using "openssl req -x509 -nodes -days 365 -newkey rsa:1024 -keyout intuit.key -out intuit.crt"
+
+5. Click "Get Federated Service Provider ID", in the issue use following format:
+
+--->
+SAML Gateway: http://extract.cloudscalr.com/
+X509 RSA Key: <content of the intuit.crt file>
+<---
+
+6. You should get email from inuit (may take few days, as process isn't automated) with "FYI: Successfully deployed SP connection '<your provider id>' to prod".
+
+7. Go to "Advanced Settings" again and put your provider id into "Federated Service Provider ID" field.
+
+8. Create new rails app and put provided saml_controller.rb into it. Map it to /
+
+--->
+map.root :controller => 'saml'
+<---
+
+in config/routes.rb. Verify that there is no other root mappings. Also, remove public/index.html.
+
+9. Put your intuit.key into cert dir in the root of your app or adjust saml_controller.rb so it'll point to proper file location.
+
+10. Install libxml-ruby, required by intuit_saml parser.
+
+11. In your controller construct IDS client object like
+
+--->
+ids = Ids::Client.new(<your app tocken>, session[:saml_ticket], params['realm'])
+<---
+
+12. Do requests
+
+--->
+ids.accounts
+<---
