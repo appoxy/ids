@@ -1,9 +1,8 @@
-
-#Appoxy IDS - Ruby Interface for the Intuit IDS Cloud API
+<h1>Appoxy IDS - Ruby Interface for the Intuit IDS Cloud API</h1>
 
 This library provides a super easy way to access all IDS objects from the new Intuit IDS Cloud.
 
-##Usage
+<h2>Usage</h2>
 
 ids = Ids::Client.new(<your app tocken>, session[:saml_ticket], params['realm'])
 
